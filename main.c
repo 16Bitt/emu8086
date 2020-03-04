@@ -44,5 +44,33 @@ int main2(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
+  uint8_t *buffer = load_binary("./example-asm/mov");
+  if(buffer == NULL) {
+    return -1;
+  }
+
+  struct instruction inst;
+  puts("mov ax, bx");
+  inst_load(&inst, buffer[0], INST_LOAD_OPCODE);
+  inst_load(&inst, buffer[1], INST_LOAD_ADDRESS);
+  inst_dump(&inst);
+  puts("mov al, bl");
+  inst_load(&inst, buffer[2], INST_LOAD_OPCODE);
+  inst_load(&inst, buffer[3], INST_LOAD_ADDRESS);
+  inst_dump(&inst);
+  puts("mov ax, 9999");
+  inst_load(&inst, buffer[4], INST_LOAD_OPCODE);
+  inst_load(&inst, buffer[5], INST_LOAD_ADDRESS);
+  inst_dump(&inst);
+  puts("cli");
+  inst_load(&inst, buffer[5], INST_LOAD_OPCODE);
+  inst_load(&inst, buffer[6], INST_LOAD_ADDRESS);
+  inst_dump(&inst);
+  puts("hlt");
+  inst_load(&inst, buffer[6], INST_LOAD_OPCODE);
+  inst_load(&inst, buffer[7], INST_LOAD_ADDRESS);
+  inst_dump(&inst);
+
+  free(buffer);
   return 0;
 }

@@ -3,6 +3,7 @@
 
 #include "stdlib.h"
 #include "stdint.h"
+#include "stdio.h"
 
 struct Registers {
   /* Instruction pointer */
@@ -65,11 +66,61 @@ uint16_t bus_write_byte(struct Bus *bus, uint32_t address, uint8_t value);
 
 /* Instruction decode interface */
 
-/* Generated instruction file -- put in a seperate place for ease of development and size */
-#include "generated_define.h"
-
 struct instruction {
-  enum operation_t op;
-  enum register_mode_t mode;
+  // Byte 1: opcode
+  uint8_t opcode : 6;
+  uint8_t direction : 1;
+  uint8_t is_word : 1;
+
+  // Byte 2: addressing mode
+  uint8_t mod : 2;
+  uint8_t reg : 3;
+  uint8_t rm : 3;
+
+  // Byte 3 - 6: instruction data
+  uint8_t data_low_a;
+  uint8_t data_high_a;
+  uint8_t data_low_b;
+  uint8_t data_high_b;
 };
+
+// direction bit modes
+#define DIRECTION_REG_TO_MEM 0
+#define DIRECTION_MEM_TO_REG 1
+#define DIRSIGN_IMM_WORD 0
+#define DIRSIGN_EXTEND_OPERAND 1
+
+// mod bit modes
+#define MOD_TABLE_1 0
+#define MOD_TABLE_2_BYTE 1
+#define MOD_TABLE_2_WORD 2
+#define MOD_REG_TABLE 3
+
+#define RM_IMMEDIATE 0x6
+
+enum inst_load_t {
+  INST_LOAD_OPCODE,
+  INST_LOAD_ADDRESS,
+  INST_LOAD_BYTE_1,
+  INST_LOAD_BYTE_2,
+  INST_LOAD_BYTE_3,
+  INST_LOAD_BYTE_4,
+  INST_LOAD_DONE
+};
+
+// instruction helpers
+void inst_dump(struct instruction *inst);
+
+// state machine entrypoint for instruction parsing
+enum inst_load_t inst_load(struct instruction *inst, uint8_t byte, enum inst_load_t step);
+enum inst_load_t inst_opcode_load(struct instruction *inst, uint8_t byte);
+enum inst_load_t inst_address_load(struct instruction *inst, uint8_t byte);
+
+/* Utilities */
+uint8_t* load_binary(char *path);
+void binary_print(uint8_t byte);
+
+/* Linker hacks! Why is this needed? */
+int fileno(FILE *f);
+
 #endif

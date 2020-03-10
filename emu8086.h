@@ -120,6 +120,58 @@ enum inst_load_t inst_address_load(struct instruction *inst, uint8_t byte);
 uint8_t* load_binary(char *path);
 void binary_print(uint8_t byte);
 
+enum op_args_t {
+  args_AH_Ib,
+  args_AL_DX,
+  args_AL_Ib,
+  args_AL_Ob,
+  args_BH_Ib,
+  args_BL_Ib,
+  args_CH_Ib,
+  args_CL_Ib,
+  args_DH_Ib,
+  args_DL_Ib,
+  args_DX_AL,
+  args_DX_eAX,
+  args_Eb_1,
+  args_Eb_CL,
+  args_Eb_Gb,
+  args_Eb_Ib,
+  args_Ev_1,
+  args_Ev_CL,
+  args_Ev_Gv,
+  args_Ev_Ib,
+  args_Ev_Iv,
+  args_Ew_Sw,
+  args_Gb_Eb,
+  args_Gv_Ev,
+  args_Gv_M,
+  args_Gv_Mp,
+  args_Ib_AL,
+  args_Ib_eAX,
+  args_Ob_AL,
+  args_Ov_eAX,
+  args_Sw_Ew,
+  args_eAX_DX,
+  args_eAX_Ib,
+  args_eAX_Iv,
+  args_eAX_Ov,
+  args_eBP_Iv,
+  args_eBP_eAX,
+  args_eBX_Iv,
+  args_eBX_eAX,
+  args_eCX_Iv,
+  args_eCX_eAX,
+  args_eDI_Iv,
+  args_eDI_eAX,
+  args_eDX_Iv,
+  args_eDX_eAX,
+  args_eSI_Iv,
+  args_eSI_eAX,
+  args_eSP_Iv,
+  args_eSP_eAX
+};
+
 /* Linker hacks! Why is this needed? */
 int fileno(FILE *f);
 

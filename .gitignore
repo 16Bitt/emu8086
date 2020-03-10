@@ -1,5 +1,2 @@
 *.o
 emu8086
-bin/8086_table.txt
-generated_decode.c
-generated_define.h

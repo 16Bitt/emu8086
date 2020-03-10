@@ -4,7 +4,7 @@
 entry:
   mov ax, bx
   mov al, bl
-  mov ax, 9999
+  mov bx, 9999
   cli
   hlt
   mov al, dl

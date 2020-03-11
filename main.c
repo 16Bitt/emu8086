@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     return -1;
   }
 
-  struct instruction inst;
+  struct Instruction inst;
   puts("mov ax, bx");
   inst_load(&inst, buffer[0], INST_LOAD_OPCODE);
   inst_load(&inst, buffer[1], INST_LOAD_ADDRESS);

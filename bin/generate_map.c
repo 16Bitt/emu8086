@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
   char targets[4][16];
   
   puts("#include \"emu8086.h\"\n");
-  puts("void handle_decode(uint8_t op) {");
+  puts("void handle_decode(struct ExecutionContext* ec, uint8_t op) {");
   puts("  switch(op) {");
 
   while((bytes_read = getline(&line, &len, stdin)) != -1) {
@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
   }
   
   puts("  default:");
+  puts("    break;");
   puts("  }");
   puts("}");
 
@@ -50,9 +51,18 @@ void handle_line(int args_read, char* arg0, char* arg1, char* arg2, char *arg3) 
       }
 
       printf("  case 0x%s:\n", arg0);
-      printf("    op_%s();\n", arg1);
+      printf("    op_%s(ec, op, args_none);\n", arg1);
       printf("    break;\n");
       
+      break;
+    case 3:
+      if(is_grp(arg0)) {
+        printf("/* Ignore GRP */\n");
+        break;
+      }
+      printf("  case 0x%s:\n", arg0);
+      printf("    op_%s(ec, op, args_%s);\n", arg1, arg2);
+      printf("    break;\n");
       break;
     case 4:
       if(is_grp(arg0)) {
@@ -60,12 +70,13 @@ void handle_line(int args_read, char* arg0, char* arg1, char* arg2, char *arg3) 
         break;
       }
       printf("  case 0x%s:\n", arg0);
-      printf("    op_%s(args_%s_%s);\n", arg1, arg2, arg3);
+      printf("    op_%s(ec, op, args_%s_%s);\n", arg1, arg2, arg3);
       printf("    break;\n");
       break;
     case 0:
     case 1:
     default:
+      printf("/* Unhandled %s with %d args */\n", arg0, args_read);
       break;
   }
 }

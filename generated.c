@@ -1,167 +1,284 @@
 #include "emu8086.h"
 
-void handle_decode(uint8_t op) {
+void handle_decode(struct ExecutionContext* ec, uint8_t op) {
   switch(op) {
   case 0x00:
-    op_ADD(args_Eb_Gb);
+    op_ADD(ec, op, args_Eb_Gb);
     break;
   case 0x01:
-    op_ADD(args_Ev_Gv);
+    op_ADD(ec, op, args_Ev_Gv);
     break;
   case 0x02:
-    op_ADD(args_Gb_Eb);
+    op_ADD(ec, op, args_Gb_Eb);
     break;
   case 0x03:
-    op_ADD(args_Gv_Ev);
+    op_ADD(ec, op, args_Gv_Ev);
     break;
   case 0x04:
-    op_ADD(args_AL_Ib);
+    op_ADD(ec, op, args_AL_Ib);
     break;
   case 0x05:
-    op_ADD(args_eAX_Iv);
+    op_ADD(ec, op, args_eAX_Iv);
+    break;
+  case 0x06:
+    op_PUSH(ec, op, args_ES);
+    break;
+  case 0x07:
+    op_POP(ec, op, args_ES);
     break;
   case 0x08:
-    op_OR(args_Eb_Gb);
+    op_OR(ec, op, args_Eb_Gb);
     break;
   case 0x09:
-    op_OR(args_Ev_Gv);
+    op_OR(ec, op, args_Ev_Gv);
     break;
   case 0x0A:
-    op_OR(args_Gb_Eb);
+    op_OR(ec, op, args_Gb_Eb);
     break;
   case 0x0B:
-    op_OR(args_Gv_Ev);
+    op_OR(ec, op, args_Gv_Ev);
     break;
   case 0x0C:
-    op_OR(args_AL_Ib);
+    op_OR(ec, op, args_AL_Ib);
     break;
   case 0x0D:
-    op_OR(args_eAX_Iv);
+    op_OR(ec, op, args_eAX_Iv);
+    break;
+  case 0x0E:
+    op_PUSH(ec, op, args_CS);
     break;
 /* Unknown opcode 0F */
   case 0x10:
-    op_ADC(args_Eb_Gb);
+    op_ADC(ec, op, args_Eb_Gb);
     break;
   case 0x11:
-    op_ADC(args_Ev_Gv);
+    op_ADC(ec, op, args_Ev_Gv);
     break;
   case 0x12:
-    op_ADC(args_Gb_Eb);
+    op_ADC(ec, op, args_Gb_Eb);
     break;
   case 0x13:
-    op_ADC(args_Gv_Ev);
+    op_ADC(ec, op, args_Gv_Ev);
     break;
   case 0x14:
-    op_ADC(args_AL_Ib);
+    op_ADC(ec, op, args_AL_Ib);
     break;
   case 0x15:
-    op_ADC(args_eAX_Iv);
+    op_ADC(ec, op, args_eAX_Iv);
+    break;
+  case 0x16:
+    op_PUSH(ec, op, args_SS);
+    break;
+  case 0x17:
+    op_POP(ec, op, args_SS);
     break;
   case 0x18:
-    op_SBB(args_Eb_Gb);
+    op_SBB(ec, op, args_Eb_Gb);
     break;
   case 0x19:
-    op_SBB(args_Ev_Gv);
+    op_SBB(ec, op, args_Ev_Gv);
     break;
   case 0x1A:
-    op_SBB(args_Gb_Eb);
+    op_SBB(ec, op, args_Gb_Eb);
     break;
   case 0x1B:
-    op_SBB(args_Gv_Ev);
+    op_SBB(ec, op, args_Gv_Ev);
     break;
   case 0x1C:
-    op_SBB(args_AL_Ib);
+    op_SBB(ec, op, args_AL_Ib);
     break;
   case 0x1D:
-    op_SBB(args_eAX_Iv);
+    op_SBB(ec, op, args_eAX_Iv);
+    break;
+  case 0x1E:
+    op_PUSH(ec, op, args_DS);
+    break;
+  case 0x1F:
+    op_POP(ec, op, args_DS);
     break;
   case 0x20:
-    op_AND(args_Eb_Gb);
+    op_AND(ec, op, args_Eb_Gb);
     break;
   case 0x21:
-    op_AND(args_Ev_Gv);
+    op_AND(ec, op, args_Ev_Gv);
     break;
   case 0x22:
-    op_AND(args_Gb_Eb);
+    op_AND(ec, op, args_Gb_Eb);
     break;
   case 0x23:
-    op_AND(args_Gv_Ev);
+    op_AND(ec, op, args_Gv_Ev);
     break;
   case 0x24:
-    op_AND(args_AL_Ib);
+    op_AND(ec, op, args_AL_Ib);
     break;
   case 0x25:
-    op_AND(args_eAX_Iv);
+    op_AND(ec, op, args_eAX_Iv);
     break;
 /* Unknown opcode 26 */
   case 0x27:
-    op_DAA();
+    op_DAA(ec, op, args_none);
     break;
   case 0x28:
-    op_SUB(args_Eb_Gb);
+    op_SUB(ec, op, args_Eb_Gb);
     break;
   case 0x29:
-    op_SUB(args_Ev_Gv);
+    op_SUB(ec, op, args_Ev_Gv);
     break;
   case 0x2A:
-    op_SUB(args_Gb_Eb);
+    op_SUB(ec, op, args_Gb_Eb);
     break;
   case 0x2B:
-    op_SUB(args_Gv_Ev);
+    op_SUB(ec, op, args_Gv_Ev);
     break;
   case 0x2C:
-    op_SUB(args_AL_Ib);
+    op_SUB(ec, op, args_AL_Ib);
     break;
   case 0x2D:
-    op_SUB(args_eAX_Iv);
+    op_SUB(ec, op, args_eAX_Iv);
     break;
 /* Unknown opcode 2E */
   case 0x2F:
-    op_DAS();
+    op_DAS(ec, op, args_none);
     break;
   case 0x30:
-    op_XOR(args_Eb_Gb);
+    op_XOR(ec, op, args_Eb_Gb);
     break;
   case 0x31:
-    op_XOR(args_Ev_Gv);
+    op_XOR(ec, op, args_Ev_Gv);
     break;
   case 0x32:
-    op_XOR(args_Gb_Eb);
+    op_XOR(ec, op, args_Gb_Eb);
     break;
   case 0x33:
-    op_XOR(args_Gv_Ev);
+    op_XOR(ec, op, args_Gv_Ev);
     break;
   case 0x34:
-    op_XOR(args_AL_Ib);
+    op_XOR(ec, op, args_AL_Ib);
     break;
   case 0x35:
-    op_XOR(args_eAX_Iv);
+    op_XOR(ec, op, args_eAX_Iv);
     break;
 /* Unknown opcode 36 */
   case 0x37:
-    op_AAA();
+    op_AAA(ec, op, args_none);
     break;
   case 0x38:
-    op_CMP(args_Eb_Gb);
+    op_CMP(ec, op, args_Eb_Gb);
     break;
   case 0x39:
-    op_CMP(args_Ev_Gv);
+    op_CMP(ec, op, args_Ev_Gv);
     break;
   case 0x3A:
-    op_CMP(args_Gb_Eb);
+    op_CMP(ec, op, args_Gb_Eb);
     break;
   case 0x3B:
-    op_CMP(args_Gv_Ev);
+    op_CMP(ec, op, args_Gv_Ev);
     break;
   case 0x3C:
-    op_CMP(args_AL_Ib);
+    op_CMP(ec, op, args_AL_Ib);
     break;
   case 0x3D:
-    op_CMP(args_eAX_Iv);
+    op_CMP(ec, op, args_eAX_Iv);
     break;
 /* Unknown opcode 3E */
   case 0x3F:
-    op_AAS();
+    op_AAS(ec, op, args_none);
+    break;
+  case 0x40:
+    op_INC(ec, op, args_eAX);
+    break;
+  case 0x41:
+    op_INC(ec, op, args_eCX);
+    break;
+  case 0x42:
+    op_INC(ec, op, args_eDX);
+    break;
+  case 0x43:
+    op_INC(ec, op, args_eBX);
+    break;
+  case 0x44:
+    op_INC(ec, op, args_eSP);
+    break;
+  case 0x45:
+    op_INC(ec, op, args_eBP);
+    break;
+  case 0x46:
+    op_INC(ec, op, args_eSI);
+    break;
+  case 0x47:
+    op_INC(ec, op, args_eDI);
+    break;
+  case 0x48:
+    op_DEC(ec, op, args_eAX);
+    break;
+  case 0x49:
+    op_DEC(ec, op, args_eCX);
+    break;
+  case 0x4A:
+    op_DEC(ec, op, args_eDX);
+    break;
+  case 0x4B:
+    op_DEC(ec, op, args_eBX);
+    break;
+  case 0x4C:
+    op_DEC(ec, op, args_eSP);
+    break;
+  case 0x4D:
+    op_DEC(ec, op, args_eBP);
+    break;
+  case 0x4E:
+    op_DEC(ec, op, args_eSI);
+    break;
+  case 0x4F:
+    op_DEC(ec, op, args_eDI);
+    break;
+  case 0x50:
+    op_PUSH(ec, op, args_eAX);
+    break;
+  case 0x51:
+    op_PUSH(ec, op, args_eCX);
+    break;
+  case 0x52:
+    op_PUSH(ec, op, args_eDX);
+    break;
+  case 0x53:
+    op_PUSH(ec, op, args_eBX);
+    break;
+  case 0x54:
+    op_PUSH(ec, op, args_eSP);
+    break;
+  case 0x55:
+    op_PUSH(ec, op, args_eBP);
+    break;
+  case 0x56:
+    op_PUSH(ec, op, args_eSI);
+    break;
+  case 0x57:
+    op_PUSH(ec, op, args_eDI);
+    break;
+  case 0x58:
+    op_POP(ec, op, args_eAX);
+    break;
+  case 0x59:
+    op_POP(ec, op, args_eCX);
+    break;
+  case 0x5A:
+    op_POP(ec, op, args_eDX);
+    break;
+  case 0x5B:
+    op_POP(ec, op, args_eBX);
+    break;
+  case 0x5C:
+    op_POP(ec, op, args_eSP);
+    break;
+  case 0x5D:
+    op_POP(ec, op, args_eBP);
+    break;
+  case 0x5E:
+    op_POP(ec, op, args_eSI);
+    break;
+  case 0x5F:
+    op_POP(ec, op, args_eDI);
     break;
 /* Unknown opcode 60 */
 /* Unknown opcode 61 */
@@ -179,235 +296,307 @@ void handle_decode(uint8_t op) {
 /* Unknown opcode 6D */
 /* Unknown opcode 6E */
 /* Unknown opcode 6F */
+  case 0x70:
+    op_JO(ec, op, args_Jb);
+    break;
+  case 0x71:
+    op_JNO(ec, op, args_Jb);
+    break;
+  case 0x72:
+    op_JB(ec, op, args_Jb);
+    break;
+  case 0x73:
+    op_JNB(ec, op, args_Jb);
+    break;
+  case 0x74:
+    op_JZ(ec, op, args_Jb);
+    break;
+  case 0x75:
+    op_JNZ(ec, op, args_Jb);
+    break;
+  case 0x76:
+    op_JBE(ec, op, args_Jb);
+    break;
+  case 0x77:
+    op_JA(ec, op, args_Jb);
+    break;
+  case 0x78:
+    op_JS(ec, op, args_Jb);
+    break;
+  case 0x79:
+    op_JNS(ec, op, args_Jb);
+    break;
+  case 0x7A:
+    op_JPE(ec, op, args_Jb);
+    break;
+  case 0x7B:
+    op_JPO(ec, op, args_Jb);
+    break;
+  case 0x7C:
+    op_JL(ec, op, args_Jb);
+    break;
+  case 0x7D:
+    op_JGE(ec, op, args_Jb);
+    break;
+  case 0x7E:
+    op_JLE(ec, op, args_Jb);
+    break;
+  case 0x7F:
+    op_JG(ec, op, args_Jb);
+    break;
   case 0x80:
-    op_GRP1(args_Eb_Ib);
+    op_GRP1(ec, op, args_Eb_Ib);
     break;
   case 0x81:
-    op_GRP1(args_Ev_Iv);
+    op_GRP1(ec, op, args_Ev_Iv);
     break;
   case 0x82:
-    op_GRP1(args_Eb_Ib);
+    op_GRP1(ec, op, args_Eb_Ib);
     break;
   case 0x83:
-    op_GRP1(args_Ev_Ib);
+    op_GRP1(ec, op, args_Ev_Ib);
     break;
   case 0x84:
-    op_TEST(args_Gb_Eb);
+    op_TEST(ec, op, args_Gb_Eb);
     break;
   case 0x85:
-    op_TEST(args_Gv_Ev);
+    op_TEST(ec, op, args_Gv_Ev);
     break;
   case 0x86:
-    op_XCHG(args_Gb_Eb);
+    op_XCHG(ec, op, args_Gb_Eb);
     break;
   case 0x87:
-    op_XCHG(args_Gv_Ev);
+    op_XCHG(ec, op, args_Gv_Ev);
     break;
   case 0x88:
-    op_MOV(args_Eb_Gb);
+    op_MOV(ec, op, args_Eb_Gb);
     break;
   case 0x89:
-    op_MOV(args_Ev_Gv);
+    op_MOV(ec, op, args_Ev_Gv);
     break;
   case 0x8A:
-    op_MOV(args_Gb_Eb);
+    op_MOV(ec, op, args_Gb_Eb);
     break;
   case 0x8B:
-    op_MOV(args_Gv_Ev);
+    op_MOV(ec, op, args_Gv_Ev);
     break;
   case 0x8C:
-    op_MOV(args_Ew_Sw);
+    op_MOV(ec, op, args_Ew_Sw);
     break;
   case 0x8D:
-    op_LEA(args_Gv_M);
+    op_LEA(ec, op, args_Gv_M);
     break;
   case 0x8E:
-    op_MOV(args_Sw_Ew);
+    op_MOV(ec, op, args_Sw_Ew);
+    break;
+  case 0x8F:
+    op_POP(ec, op, args_Ev);
     break;
   case 0x90:
-    op_NOP();
+    op_NOP(ec, op, args_none);
     break;
   case 0x91:
-    op_XCHG(args_eCX_eAX);
+    op_XCHG(ec, op, args_eCXeAX);
     break;
   case 0x92:
-    op_XCHG(args_eDX_eAX);
+    op_XCHG(ec, op, args_eDXeAX);
     break;
   case 0x93:
-    op_XCHG(args_eBX_eAX);
+    op_XCHG(ec, op, args_eBXeAX);
     break;
   case 0x94:
-    op_XCHG(args_eSP_eAX);
+    op_XCHG(ec, op, args_eSPeAX);
     break;
   case 0x95:
-    op_XCHG(args_eBP_eAX);
+    op_XCHG(ec, op, args_eBPeAX);
     break;
   case 0x96:
-    op_XCHG(args_eSI_eAX);
+    op_XCHG(ec, op, args_eSIeAX);
     break;
   case 0x97:
-    op_XCHG(args_eDI_eAX);
+    op_XCHG(ec, op, args_eDIeAX);
     break;
   case 0x98:
-    op_CBW();
+    op_CBW(ec, op, args_none);
     break;
   case 0x99:
-    op_CWD();
+    op_CWD(ec, op, args_none);
+    break;
+  case 0x9A:
+    op_CALL(ec, op, args_Ap);
     break;
   case 0x9B:
-    op_WAIT();
+    op_WAIT(ec, op, args_none);
     break;
   case 0x9C:
-    op_PUSHF();
+    op_PUSHF(ec, op, args_none);
     break;
   case 0x9D:
-    op_POPF();
+    op_POPF(ec, op, args_none);
     break;
   case 0x9E:
-    op_SAHF();
+    op_SAHF(ec, op, args_none);
     break;
   case 0x9F:
-    op_LAHF();
+    op_LAHF(ec, op, args_none);
     break;
   case 0xA0:
-    op_MOV(args_AL_Ob);
+    op_MOV(ec, op, args_AL_Ob);
     break;
   case 0xA1:
-    op_MOV(args_eAX_Ov);
+    op_MOV(ec, op, args_eAX_Ov);
     break;
   case 0xA2:
-    op_MOV(args_Ob_AL);
+    op_MOV(ec, op, args_Ob_AL);
     break;
   case 0xA3:
-    op_MOV(args_Ov_eAX);
+    op_MOV(ec, op, args_Ov_eAX);
     break;
   case 0xA4:
-    op_MOVSB();
+    op_MOVSB(ec, op, args_none);
     break;
   case 0xA5:
-    op_MOVSW();
+    op_MOVSW(ec, op, args_none);
     break;
   case 0xA6:
-    op_CMPSB();
+    op_CMPSB(ec, op, args_none);
     break;
   case 0xA7:
-    op_CMPSW();
+    op_CMPSW(ec, op, args_none);
     break;
   case 0xA8:
-    op_TEST(args_AL_Ib);
+    op_TEST(ec, op, args_AL_Ib);
     break;
   case 0xA9:
-    op_TEST(args_eAX_Iv);
+    op_TEST(ec, op, args_eAX_Iv);
     break;
   case 0xAA:
-    op_STOSB();
+    op_STOSB(ec, op, args_none);
     break;
   case 0xAB:
-    op_STOSW();
+    op_STOSW(ec, op, args_none);
     break;
   case 0xAC:
-    op_LODSB();
+    op_LODSB(ec, op, args_none);
     break;
   case 0xAD:
-    op_LODSW();
+    op_LODSW(ec, op, args_none);
     break;
   case 0xAE:
-    op_SCASB();
+    op_SCASB(ec, op, args_none);
     break;
   case 0xAF:
-    op_SCASW();
+    op_SCASW(ec, op, args_none);
     break;
   case 0xB0:
-    op_MOV(args_AL_Ib);
+    op_MOV(ec, op, args_AL_Ib);
     break;
   case 0xB1:
-    op_MOV(args_CL_Ib);
+    op_MOV(ec, op, args_CL_Ib);
     break;
   case 0xB2:
-    op_MOV(args_DL_Ib);
+    op_MOV(ec, op, args_DL_Ib);
     break;
   case 0xB3:
-    op_MOV(args_BL_Ib);
+    op_MOV(ec, op, args_BL_Ib);
     break;
   case 0xB4:
-    op_MOV(args_AH_Ib);
+    op_MOV(ec, op, args_AH_Ib);
     break;
   case 0xB5:
-    op_MOV(args_CH_Ib);
+    op_MOV(ec, op, args_CH_Ib);
     break;
   case 0xB6:
-    op_MOV(args_DH_Ib);
+    op_MOV(ec, op, args_DH_Ib);
     break;
   case 0xB7:
-    op_MOV(args_BH_Ib);
+    op_MOV(ec, op, args_BH_Ib);
     break;
   case 0xB8:
-    op_MOV(args_eAX_Iv);
+    op_MOV(ec, op, args_eAX_Iv);
     break;
   case 0xB9:
-    op_MOV(args_eCX_Iv);
+    op_MOV(ec, op, args_eCX_Iv);
     break;
   case 0xBA:
-    op_MOV(args_eDX_Iv);
+    op_MOV(ec, op, args_eDX_Iv);
     break;
   case 0xBB:
-    op_MOV(args_eBX_Iv);
+    op_MOV(ec, op, args_eBX_Iv);
     break;
   case 0xBC:
-    op_MOV(args_eSP_Iv);
+    op_MOV(ec, op, args_eSP_Iv);
     break;
   case 0xBD:
-    op_MOV(args_eBP_Iv);
+    op_MOV(ec, op, args_eBP_Iv);
     break;
   case 0xBE:
-    op_MOV(args_eSI_Iv);
+    op_MOV(ec, op, args_eSI_Iv);
     break;
   case 0xBF:
-    op_MOV(args_eDI_Iv);
+    op_MOV(ec, op, args_eDI_Iv);
     break;
 /* Unknown opcode C0 */
 /* Unknown opcode C1 */
+  case 0xC2:
+    op_RET(ec, op, args_Iw);
+    break;
   case 0xC3:
-    op_RET();
+    op_RET(ec, op, args_none);
     break;
   case 0xC4:
-    op_LES(args_Gv_Mp);
+    op_LES(ec, op, args_Gv_Mp);
     break;
   case 0xC5:
-    op_LDS(args_Gv_Mp);
+    op_LDS(ec, op, args_Gv_Mp);
     break;
   case 0xC6:
-    op_MOV(args_Eb_Ib);
+    op_MOV(ec, op, args_Eb_Ib);
     break;
   case 0xC7:
-    op_MOV(args_Ev_Iv);
+    op_MOV(ec, op, args_Ev_Iv);
     break;
 /* Unknown opcode C8 */
 /* Unknown opcode C9 */
+  case 0xCA:
+    op_RETF(ec, op, args_Iw);
+    break;
   case 0xCB:
-    op_RETF();
+    op_RETF(ec, op, args_none);
+    break;
+  case 0xCC:
+    op_INT(ec, op, args_3);
+    break;
+  case 0xCD:
+    op_INT(ec, op, args_Ib);
     break;
   case 0xCE:
-    op_INTO();
+    op_INTO(ec, op, args_none);
     break;
   case 0xCF:
-    op_IRET();
+    op_IRET(ec, op, args_none);
     break;
   case 0xD0:
-    op_GRP2(args_Eb_1);
+    op_GRP2(ec, op, args_Eb_1);
     break;
   case 0xD1:
-    op_GRP2(args_Ev_1);
+    op_GRP2(ec, op, args_Ev_1);
     break;
   case 0xD2:
-    op_GRP2(args_Eb_CL);
+    op_GRP2(ec, op, args_Eb_CL);
     break;
   case 0xD3:
-    op_GRP2(args_Ev_CL);
+    op_GRP2(ec, op, args_Ev_CL);
+    break;
+  case 0xD4:
+    op_AAM(ec, op, args_I0);
+    break;
+  case 0xD5:
+    op_AAD(ec, op, args_I0);
     break;
 /* Unknown opcode D6 */
   case 0xD7:
-    op_XLAT();
+    op_XLAT(ec, op, args_none);
     break;
 /* Unknown opcode D8 */
 /* Unknown opcode D9 */
@@ -417,64 +606,102 @@ void handle_decode(uint8_t op) {
 /* Unknown opcode DD */
 /* Unknown opcode DE */
 /* Unknown opcode DF */
+  case 0xE0:
+    op_LOOPNZ(ec, op, args_Jb);
+    break;
+  case 0xE1:
+    op_LOOPZ(ec, op, args_Jb);
+    break;
+  case 0xE2:
+    op_LOOP(ec, op, args_Jb);
+    break;
+  case 0xE3:
+    op_JCXZ(ec, op, args_Jb);
+    break;
   case 0xE4:
-    op_IN(args_AL_Ib);
+    op_IN(ec, op, args_AL_Ib);
     break;
   case 0xE5:
-    op_IN(args_eAX_Ib);
+    op_IN(ec, op, args_eAX_Ib);
     break;
   case 0xE6:
-    op_OUT(args_Ib_AL);
+    op_OUT(ec, op, args_Ib_AL);
     break;
   case 0xE7:
-    op_OUT(args_Ib_eAX);
+    op_OUT(ec, op, args_Ib_eAX);
+    break;
+  case 0xE8:
+    op_CALL(ec, op, args_Jv);
+    break;
+  case 0xE9:
+    op_JMP(ec, op, args_Jv);
+    break;
+  case 0xEA:
+    op_JMP(ec, op, args_Ap);
+    break;
+  case 0xEB:
+    op_JMP(ec, op, args_Jb);
     break;
   case 0xEC:
-    op_IN(args_AL_DX);
+    op_IN(ec, op, args_AL_DX);
     break;
   case 0xED:
-    op_IN(args_eAX_DX);
+    op_IN(ec, op, args_eAX_DX);
     break;
   case 0xEE:
-    op_OUT(args_DX_AL);
+    op_OUT(ec, op, args_DX_AL);
     break;
   case 0xEF:
-    op_OUT(args_DX_eAX);
+    op_OUT(ec, op, args_DX_eAX);
     break;
   case 0xF0:
-    op_LOCK();
+    op_LOCK(ec, op, args_none);
     break;
 /* Unknown opcode F1 */
   case 0xF2:
-    op_REPNZ();
+    op_REPNZ(ec, op, args_none);
     break;
   case 0xF3:
-    op_REPZ();
+    op_REPZ(ec, op, args_none);
     break;
   case 0xF4:
-    op_HLT();
+    op_HLT(ec, op, args_none);
     break;
   case 0xF5:
-    op_CMC();
+    op_CMC(ec, op, args_none);
+    break;
+  case 0xF6:
+    op_GRP3a(ec, op, args_Eb);
+    break;
+  case 0xF7:
+    op_GRP3b(ec, op, args_Ev);
     break;
   case 0xF8:
-    op_CLC();
+    op_CLC(ec, op, args_none);
     break;
   case 0xF9:
-    op_STC();
+    op_STC(ec, op, args_none);
     break;
   case 0xFA:
-    op_CLI();
+    op_CLI(ec, op, args_none);
     break;
   case 0xFB:
-    op_STI();
+    op_STI(ec, op, args_none);
     break;
   case 0xFC:
-    op_CLD();
+    op_CLD(ec, op, args_none);
     break;
   case 0xFD:
-    op_STD();
+    op_STD(ec, op, args_none);
     break;
+  case 0xFE:
+    op_GRP4(ec, op, args_Eb);
+    break;
+  case 0xFF:
+    op_GRP5(ec, op, args_Ev);
+    break;
+/* Unhandled FF with -1 args */
+/* Unhandled FF with -1 args */
 /* Ignore GRP */
 /* Ignore GRP */
 /* Ignore GRP */
@@ -520,7 +747,10 @@ void handle_decode(uint8_t op) {
 /* Ignore GRP */
 /* Ignore GRP */
 /* Ignore GRP */
+/* Ignore GRP */
+/* Ignore GRP */
 /* Unknown opcode GRP5/7 */
   default:
+    break;
   }
 }

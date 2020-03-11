@@ -1,7 +1,7 @@
 #include "emu8086.h"
 #include "stdio.h"
 
-void inst_dump(struct instruction *inst) {
+void inst_dump(struct Instruction *inst) {
   printf("opcode: ");
   binary_print(inst->opcode);
   printf(" size: ");
@@ -18,7 +18,7 @@ void inst_dump(struct instruction *inst) {
   printf("\n");
 }
 
-enum inst_load_t inst_load(struct instruction *inst, uint8_t byte, enum inst_load_t step) {
+enum inst_load_t inst_load(struct Instruction *inst, uint8_t byte, enum inst_load_t step) {
   switch(step) {
   case INST_LOAD_ADDRESS:
     return inst_address_load(inst, byte);
@@ -28,7 +28,7 @@ enum inst_load_t inst_load(struct instruction *inst, uint8_t byte, enum inst_loa
   }
 }
 
-enum inst_load_t inst_opcode_load(struct instruction *inst, uint8_t byte) {
+enum inst_load_t inst_opcode_load(struct Instruction *inst, uint8_t byte) {
   inst->is_word = byte & 1;
   inst->direction = (byte >> 1) & 1;
   inst->opcode = (byte >> 2) & 0x3f; // Binary 00111111 (lowest 6 bits)
@@ -36,7 +36,7 @@ enum inst_load_t inst_opcode_load(struct instruction *inst, uint8_t byte) {
   return INST_LOAD_ADDRESS;
 }
 
-enum inst_load_t inst_address_load(struct instruction *inst, uint8_t byte) {
+enum inst_load_t inst_address_load(struct Instruction *inst, uint8_t byte) {
   inst->rm = byte & 0x07; // Binary 00000111 (lowest 3 bits)
   inst->reg = (byte >> 3) & 0x07;
   inst->mod = (byte >> 6) & 0x03; // Binary 00000011 (lowest 2 bits)
